@@ -14,6 +14,8 @@ interface NavbarProps {
   onOpenApplyModal: () => void;
   user: { name: string; email: string; courseInterest: string } | null;
   onLogOut: () => void;
+  isWorkspaceActive?: boolean;
+  onToggleWorkspace?: () => void;
 }
 
 const MODE_OPTIONS = [
@@ -29,7 +31,9 @@ export default function Navbar({
   onChangeThemeMode, 
   onOpenApplyModal,
   user,
-  onLogOut
+  onLogOut,
+  isWorkspaceActive = false,
+  onToggleWorkspace
 }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -305,6 +309,20 @@ export default function Navbar({
                                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                                 <span>Trainee Portal Profile Active</span>
                               </div>
+                            </div>
+
+                            <div className="pt-1">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setIsUserDropdownOpen(false);
+                                  if (onToggleWorkspace) onToggleWorkspace();
+                                }}
+                                className="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl py-2 px-3 flex items-center justify-center gap-1.5 text-xs transition-all cursor-pointer shadow-sm"
+                              >
+                                <Sparkles className="w-3.5 h-3.5" />
+                                <span>{isWorkspaceActive ? 'Return to Classic Info' : 'Student Terminal'}</span>
+                              </button>
                             </div>
 
                             <div className="pt-3 border-t border-white/5">

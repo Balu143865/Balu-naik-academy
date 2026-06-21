@@ -15,6 +15,7 @@ import Gallery from './components/Gallery';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import AuthGate from './components/AuthGate';
+import StudentWorkspace from './components/StudentWorkspace';
 import { COURSES_DATA } from './data';
 
 export const THEMES = [
@@ -101,13 +102,17 @@ export default function App() {
     return null;
   });
 
+  const [isWorkspaceActive, setIsWorkspaceActive] = useState(false);
+
   const handleAuthSuccess = (userData: { name: string; email: string; courseInterest: string }) => {
     setCurrentUser(userData);
     localStorage.setItem('balu-academy-user', JSON.stringify(userData));
+    setIsWorkspaceActive(true); // Immersive instant portal workspace layout entrance!
   };
 
   const handleLogOut = () => {
     setCurrentUser(null);
+    setIsWorkspaceActive(false);
     localStorage.removeItem('balu-academy-user');
   };
 
@@ -242,34 +247,88 @@ export default function App() {
         onOpenApplyModal={() => handleOpenApplyModal()} 
         user={currentUser}
         onLogOut={handleLogOut}
+        isWorkspaceActive={isWorkspaceActive}
+        onToggleWorkspace={() => setIsWorkspaceActive(!isWorkspaceActive)}
       />
 
       {/* Main Page Layout assembly */}
       <main className="flex-grow">
         
-        {/* Hero Section */}
-        <Hero 
-          onOpenApplyModal={() => handleOpenApplyModal()} 
-          onExploreCourses={scrollExploreCourses} 
-        />
+        {/* Trainee Portal Welcome Callout Banner */}
+        {currentUser && !isWorkspaceActive && (
+          <div className="max-w-7xl mx-auto px-4 mt-6">
+            <motion.div 
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-[#0b1220] border border-white/10 p-5 sm:p-6 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-5 relative overflow-hidden"
+            >
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary-600 via-amber-500 to-indigo-600" />
+              
+              <div className="flex items-center gap-4 text-left w-full md:w-auto">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-primary-600 to-amber-500 flex items-center justify-center font-black text-white text-sm shadow-xl shrink-0">
+                  {currentUser.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] text-amber-400 font-mono font-bold tracking-widest uppercase bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                      Trainee Logged In
+                    </span>
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  </div>
+                  <h4 className="text-sm sm:text-base font-bold text-white block">
+                    Welcome to the Academy, <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-amber-400">{currentUser.name}</span>!
+                  </h4>
+                  <span className="text-xs text-slate-400 block">
+                    Target Track: <strong className="text-slate-300 font-semibold">{currentUser.courseInterest}</strong>
+                  </span>
+                </div>
+              </div>
 
-        {/* Scroll counters block */}
-        <Counters />
+              <button
+                onClick={() => setIsWorkspaceActive(true)}
+                className="w-full md:w-auto bg-gradient-to-r from-primary-600 to-indigo-600 hover:from-primary-500 hover:to-indigo-500 text-white font-extrabold px-6 py-3.5 rounded-2xl text-xs sm:text-sm cursor-pointer transition-all hover:shadow-[0_10px_25px_rgba(99,102,241,0.25)] text-center flex items-center justify-center gap-2 uppercase tracking-wide shrink-0"
+              >
+                <Sparkles className="w-4 h-4 animate-pulse" />
+                <span>Launch Interactive Student Terminal Dashboard</span>
+              </button>
+            </motion.div>
+          </div>
+        )}
 
-        {/* Course Catalog tabs */}
-        <Courses onOpenApplyModal={(title) => handleOpenApplyModal(title)} />
+        {currentUser && isWorkspaceActive ? (
+          <div className="px-4">
+            <StudentWorkspace 
+              user={currentUser} 
+              onCloseWorkspace={() => setIsWorkspaceActive(false)} 
+            />
+          </div>
+        ) : (
+          <>
+            {/* Hero Section */}
+            <Hero 
+              onOpenApplyModal={() => handleOpenApplyModal()} 
+              onExploreCourses={scrollExploreCourses} 
+            />
 
-        {/* Placements Wall */}
-        <Placement />
+            {/* Scroll counters block */}
+            <Counters />
 
-        {/* Alumni Testimonials panel */}
-        <Testimonials />
+            {/* Course Catalog tabs */}
+            <Courses onOpenApplyModal={(title) => handleOpenApplyModal(title)} />
 
-        {/* Interactive photo gallery showcase */}
-        <Gallery />
+            {/* Placements Wall */}
+            <Placement />
 
-        {/* Combined FAQs and contact form */}
-        <Contact />
+            {/* Alumni Testimonials panel */}
+            <Testimonials />
+
+            {/* Interactive photo gallery showcase */}
+            <Gallery />
+
+            {/* Combined FAQs and contact form */}
+            <Contact />
+          </>
+        )}
 
       </main>
 
