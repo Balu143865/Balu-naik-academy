@@ -289,7 +289,7 @@ export default function App() {
                 className="w-full md:w-auto bg-gradient-to-r from-primary-600 to-indigo-600 hover:from-primary-500 hover:to-indigo-500 text-white font-extrabold px-6 py-3.5 rounded-2xl text-xs sm:text-sm cursor-pointer transition-all hover:shadow-[0_10px_25px_rgba(99,102,241,0.25)] text-center flex items-center justify-center gap-2 uppercase tracking-wide shrink-0"
               >
                 <Sparkles className="w-4 h-4 animate-pulse" />
-                <span>Launch Interactive Student Terminal Dashboard</span>
+                <span>Launch Enterprise Labs & Placement Portal</span>
               </button>
             </motion.div>
           </div>

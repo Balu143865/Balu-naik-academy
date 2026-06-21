@@ -321,7 +321,7 @@ export default function Navbar({
                                 className="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl py-2 px-3 flex items-center justify-center gap-1.5 text-xs transition-all cursor-pointer shadow-sm"
                               >
                                 <Sparkles className="w-3.5 h-3.5" />
-                                <span>{isWorkspaceActive ? 'Return to Classic Info' : 'Student Terminal'}</span>
+                                <span>{isWorkspaceActive ? 'Return to Website' : 'Enterprise Portal & Labs'}</span>
                               </button>
                             </div>
 
