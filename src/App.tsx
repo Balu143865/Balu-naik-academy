@@ -14,6 +14,7 @@ import Testimonials from './components/Testimonials';
 import Gallery from './components/Gallery';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import AuthGate from './components/AuthGate';
 import { COURSES_DATA } from './data';
 
 export const THEMES = [
@@ -92,6 +93,24 @@ export const THEMES = [
 ];
 
 export default function App() {
+  const [currentUser, setCurrentUser] = useState<{ name: string; email: string; courseInterest: string } | null>(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('balu-academy-user');
+      return stored ? JSON.parse(stored) : null;
+    }
+    return null;
+  });
+
+  const handleAuthSuccess = (userData: { name: string; email: string; courseInterest: string }) => {
+    setCurrentUser(userData);
+    localStorage.setItem('balu-academy-user', JSON.stringify(userData));
+  };
+
+  const handleLogOut = () => {
+    setCurrentUser(null);
+    localStorage.removeItem('balu-academy-user');
+  };
+
   const [currentTheme, setCurrentTheme] = useState(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('balu-academy-theme') || 'crimson';
@@ -221,6 +240,8 @@ export default function App() {
         themeMode={themeMode}
         onChangeThemeMode={setThemeMode}
         onOpenApplyModal={() => handleOpenApplyModal()} 
+        user={currentUser}
+        onLogOut={handleLogOut}
       />
 
       {/* Main Page Layout assembly */}
@@ -450,6 +471,12 @@ export default function App() {
 
             </motion.div>
           </div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {!currentUser && (
+          <AuthGate onAuthSuccess={handleAuthSuccess} />
         )}
       </AnimatePresence>
 

@@ -8,9 +8,6 @@ This contains everything you need to run your app locally.
 
 View your app in AI Studio: https://ai.studio/apps/41584e10-97cb-44f7-bcdf-ebac32d6c9de
 
-## Vercel Deploy
-url: https://balu-naik-academy.vercel.app/
-
 ## Run Locally
 
 **Prerequisites:**  Node.js

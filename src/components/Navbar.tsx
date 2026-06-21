@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Phone, Mail, MapPin, Menu, X, Code2, GraduationCap, ChevronRight, 
-  Palette, Check, Sun, Moon, Laptop 
+  Palette, Check, Sun, Moon, Laptop, LogOut, User, UserCheck, Sparkles
 } from 'lucide-react';
 import { THEMES } from '../App';
 
@@ -12,6 +12,8 @@ interface NavbarProps {
   themeMode: 'light' | 'dark' | 'system';
   onChangeThemeMode: (mode: 'light' | 'dark' | 'system') => void;
   onOpenApplyModal: () => void;
+  user: { name: string; email: string; courseInterest: string } | null;
+  onLogOut: () => void;
 }
 
 const MODE_OPTIONS = [
@@ -25,12 +27,15 @@ export default function Navbar({
   onChangeTheme, 
   themeMode, 
   onChangeThemeMode, 
-  onOpenApplyModal 
+  onOpenApplyModal,
+  user,
+  onLogOut
 }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isThemeDropdownOpen, setIsThemeDropdownOpen] = useState(false);
   const [isModeDropdownOpen, setIsModeDropdownOpen] = useState(false);
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
 
   const ModeIcon = themeMode === 'light' ? Sun : themeMode === 'dark' ? Moon : Laptop;
 
@@ -241,6 +246,88 @@ export default function Navbar({
                 </AnimatePresence>
               </div>
 
+              {/* User Account Dropdown */}
+              {user ? (
+                <div className="relative">
+                  <button
+                    id="btn-desktop-user-profile"
+                    onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
+                    className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/5 hover:border-white/10 text-white font-semibold text-xs transition-all focus:outline-none cursor-pointer"
+                  >
+                    <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-primary-600 to-amber-550 flex items-center justify-center font-black text-[10px] text-white uppercase shadow-md shrink-0">
+                      {user.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                    </div>
+                    <span className="max-w-[100px] truncate block text-slate-300">
+                      Hi, {user.name.split(' ')[0]}
+                    </span>
+                  </button>
+
+                  <AnimatePresence>
+                    {isUserDropdownOpen && (
+                      <>
+                        <div 
+                          className="fixed inset-0 z-30" 
+                          onClick={() => setIsUserDropdownOpen(false)} 
+                        />
+                        <motion.div
+                          initial={{ opacity: 0, y: 12, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 12, scale: 0.95 }}
+                          transition={{ duration: 0.15 }}
+                          className="absolute right-0 mt-3 w-64 bg-slate-950 border border-white/10 rounded-2xl shadow-2xl p-4 z-40 text-left"
+                        >
+                          <div className="space-y-3">
+                            <div className="pb-3 border-b border-white/5">
+                              <div className="flex items-center gap-2.5">
+                                <div className="bg-primary-500/10 text-primary-400 p-2 rounded-xl">
+                                  <UserCheck className="w-4 h-4" />
+                                </div>
+                                <div>
+                                  <h4 className="font-bold text-xs text-white leading-none">{user.name}</h4>
+                                  <span className="text-[10px] text-slate-400 block mt-1 font-mono truncate max-w-[160px]">
+                                    {user.email}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="space-y-2 text-[11px]">
+                              <div>
+                                <span className="text-[9px] text-slate-500 font-extrabold uppercase font-mono tracking-wider block">
+                                  Target Track Career
+                                </span>
+                                <span className="text-slate-200 block font-medium mt-0.5 max-w-[200px] truncate">
+                                  {user.courseInterest || 'General Admission'}
+                                </span>
+                              </div>
+                              
+                              <div className="pt-1 flex items-center gap-1.5 text-[10px] text-emerald-400 font-mono">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                <span>Trainee Portal Profile Active</span>
+                              </div>
+                            </div>
+
+                            <div className="pt-3 border-t border-white/5">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setIsUserDropdownOpen(false);
+                                  onLogOut();
+                                }}
+                                className="w-full bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 border border-red-500/10 rounded-xl py-2 px-3 flex items-center justify-center gap-2 font-bold text-xs transition-all cursor-pointer"
+                              >
+                                <LogOut className="w-3.5 h-3.5" />
+                                <span>Sign Out of Portal</span>
+                              </button>
+                            </div>
+                          </div>
+                        </motion.div>
+                      </>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : null}
+
               {/* Action Button */}
               <button
                 id="btn-nav-apply"
@@ -400,6 +487,35 @@ export default function Navbar({
               className="lg:hidden bg-slate-900 border-t border-white/5"
             >
               <div className="px-4 pt-3 pb-6 space-y-2">
+                {user && (
+                  <div className="px-4 py-3 bg-white/[0.03] border border-white/5 rounded-xl mb-3 space-y-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-primary-600 to-amber-500 flex items-center justify-center font-black text-xs text-white uppercase shrink-0">
+                        {user.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                      </div>
+                      <div className="truncate">
+                        <span className="block text-xs font-bold text-white leading-none">{user.name}</span>
+                        <span className="block text-[10px] text-slate-400 font-mono mt-1 truncate">{user.email}</span>
+                      </div>
+                    </div>
+                    <div className="text-[10px] text-slate-400 pt-1.5 border-t border-white/5">
+                      <span className="text-[9px] text-slate-500 font-extrabold uppercase font-mono tracking-wider block">Career Tracking:</span>
+                      <span className="text-slate-300 font-medium block mt-0.5 truncate">{user.courseInterest}</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        onLogOut();
+                      }}
+                      className="w-full bg-red-500/10 hover:bg-red-500/20 text-red-400 py-1.5 px-3 rounded-lg flex items-center justify-center gap-1.5 text-xs font-bold transition-all border border-red-500/10 cursor-pointer mt-2"
+                    >
+                      <LogOut className="w-3.5 h-3.5" />
+                      <span>Sign Out of Portal</span>
+                    </button>
+                  </div>
+                )}
+
                 {navLinks.map((link) => (
                   <a
                     key={link.name}
