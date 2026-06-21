@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+:root {
+  --bg-main: #f8fafc;
+  --bg-section: #ffffff;
+  --bg-card: #ffffff;
+  --bg-dark-accent: #f1f5f9;
+  --bg-hero: #f8fafc;
+  --border-color: rgba(15, 23, 42, 0.08);
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --navbar-bg: rgba(255, 255, 255, 0.9);
+  --footer-bg: #0f172a;
+}
+
+html.dark {
+  --bg-main: #030712;
+  --bg-section: #050b16;
+  --bg-card: rgba(255, 255, 255, 0.02);
+  --bg-dark-accent: #0b1528;
+  --bg-hero: #030712;
+  --border-color: rgba(255, 255, 255, 0.05);
+  --text-main: #ffffff;
+  --text-muted: #94a3b8;
+  --navbar-bg: rgba(5, 11, 22, 0.92);
+  --footer-bg: #050b16;
+}
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  /* Red/Crimson and Dark Deep Navy color palettes matching fullstackexperts.in */
+  --color-primary-50: #fff5f5;
+  --color-primary-100: #ffe3e3;
+  --color-primary-200: #ffc9c9;
+  --color-primary-300: #ffa8a8;
+  --color-primary-400: #ff8787;
+  --color-primary-500: #ef4444;
+  --color-primary-600: #eb3b3b;
+  --color-primary-700: #d32f2f;
+  --color-primary-800: #b91c1c;
+  --color-primary-900: #7f1d1d;
+  
+  --color-brand-accent: #eb3b3b; /* Red brand color */
+  --color-brand-dark: #0b1528; /* Deep Navy blue background */
+  --color-brand-pitch: #050b16; /* Pitch dark navy blue */
+
+  /* Theme-mode specific colors */
+  --color-brand-bg-main: var(--bg-main);
+  --color-brand-bg-section: var(--bg-section);
+  --color-brand-bg-card: var(--bg-card);
+  --color-brand-bg-accent: var(--bg-dark-accent);
+  --color-brand-bg-hero: var(--bg-hero);
+  --color-brand-border: var(--border-color);
+  --color-brand-text-main: var(--text-main);
+  --color-brand-text-muted: var(--text-muted);
+  --color-brand-navbar: var(--navbar-bg);
+}
+
+/* Custom Base Styles */
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-sans);
+  background-color: var(--bg-main);
+  color: var(--text-main);
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Smooth custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Glassmorphism Classes for modern high-end UI */
+.glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.glass-dark {
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Gradient Background Animation */
+@keyframes pulseGlow {
+  0%, 100% {
+    transform: scale(1) translate(0px, 0px);
+    opacity: 0.35;
+  }
+  33% {
+    transform: scale(1.15) translate(30px, -40px);
+    opacity: 0.5;
+  }
+  66% {
+    transform: scale(0.9) translate(-20px, 20px);
+    opacity: 0.4;
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 12s infinite alternate ease-in-out;
+}
+
